@@ -2,23 +2,15 @@ cmake_minimum_required(VERSION 3.10)
 project(ViperDB)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Protobuf REQUIRED)
-find_package(absl REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
 
 add_executable(test test.cpp viperdb.pb.cc)
 
 target_link_libraries(test 
-    ${Protobuf_LIBRARIES}
-    absl::base
-    absl::log_internal_message
-    absl::log_internal_check_op
-    absl::log_internal_nullguard
-    absl::strings
-    absl::raw_logging_internal
+    gRPC::grpc++
 )
-
-target_include_directories(test PRIVATE ${Protobuf_INCLUDE_DIRS})
 
 add_custom_target(distClean
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/CMakeFiles
