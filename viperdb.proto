@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+message CreateVectorRequest {
+    repeated float vector = 1;
+}
+
+message SearchVectorRequest {
+    repeated float query = 1;
+    int32 top_k = 2;
+    // int32 n_probe = 3;
+}
+
+// message DeleteVectorRequest {
+//     string id = 1;
+// }
+
+// message UpdateVectorRequest {
+//     string id = 1;
+//     repeated float new_vector = 2;
+// }
+
+// message PollVectorRequest {
+//     string id = 1;
+// }
+
+message CreateVectorResponse {
+    string id = 1;
+}
+
+message SearchVectorResponse {
+    repeated SearchVectorResult results = 1;
+}
+
+message SearchVectorResult {
+    string id = 1;
+    float similarity = 2;
+}
+
+// message DeleteVectorResponse {
+//     bool success = 1;
+// }
+
+// message UpdateVectorResponse {
+//     bool success = 1;
+// }
+
+// message PollVectorResponse {
+//     string id = 1;
+//     CurrentPhase current_phase = 2;
+// }
+
+// enum CurrentPhase {
+//     WAITING = 0;
+//     PROCESSING = 1;
+//     STORED = 2;
+//     FAILED = 3;
+// }
+
+service ViperDB {
+    rpc CreateVector(CreateVectorRequest) returns (CreateVectorResponse);
+    rpc SearchVector(SearchVectorRequest) returns (SearchVectorResponse);
+    // rpc DeleteVector(DeleteVectorRequest) returns (DeleteVectorResponse);
+    // rpc UpdateVector(UpdateVectorRequest) returns (UpdateVectorResponse);
+    // rpc PollVector(PollVectorRequest) returns (PollVectorResponse);
+}
