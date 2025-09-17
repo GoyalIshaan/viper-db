@@ -20,10 +20,11 @@ target_link_libraries(test
 
 target_include_directories(test PRIVATE ${Protobuf_INCLUDE_DIRS})
 
-add_custom_target(clean
+add_custom_target(distClean
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/CMakeFiles
     COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
     COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/Makefile
     COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/cmake_install.cmake
+    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/test
     COMMENT "Removing CMake cache and build files"
 )
