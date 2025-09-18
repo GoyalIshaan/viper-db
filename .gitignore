@@ -1,2 +1,5 @@
 build/
 *.o
+cmake-build-debug/
+*.grpc.*
+*.pb.*
