@@ -11,3 +11,4 @@ cmake-build-debug/
 *.grpc.pb.cc
 *.grpc.pb.h
 .vscode/
+*.py
