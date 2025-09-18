@@ -1,4 +1,6 @@
 #include "viperdbservice.h"
+#include "utils/uuid.h"
+#include "utils/similarity.h"
 
 grpc::Status ViperDBService::CreateVector(grpc::ServerContext* context, const CreateVectorRequest* request, CreateVectorResponse* response) {
     if (request -> vector_size() != 128) return grpc::Status::CANCELLED;

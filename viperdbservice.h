@@ -5,8 +5,6 @@
 #include "viperdb.pb.h"
 #include <string>
 #include <map>
-#include "utils/uuid.h"
-#include "utils/similarity.h"
 
 class ViperDBService : public ViperDB::Service {
     private:
