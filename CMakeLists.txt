@@ -5,18 +5,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(gRPC CONFIG REQUIRED)
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(UUID REQUIRED uuid)
 
 add_executable(test test.cpp viperdb.pb.cc viperdbservice.cpp
-        utils/cosineSimilairty.cpp)
+        utils/similarity.h
+        utils/uuid.h
+        utils/similarity.cpp
+        utils/uuid.cpp)
 
 target_link_libraries(test 
     gRPC::grpc++
-    ${UUID_LIBRARIES}
 )
-
-target_include_directories(test PRIVATE ${UUID_INCLUDE_DIRS})
-target_compile_options(test PRIVATE ${UUID_CFLAGS_OTHER})
 
 add_custom_target(distClean
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/CMakeFiles
