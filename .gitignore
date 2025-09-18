@@ -2,4 +2,11 @@ build/
 *.o
 cmake-build-debug/
 *.grpc.*
-*.pb.*
+*.pb.**.pb.cc
+*.pb.h
+*.grpc.pb.cc
+*.grpc.pb.h
+*.pb.cc
+*.pb.h
+*.grpc.pb.cc
+*.grpc.pb.h
