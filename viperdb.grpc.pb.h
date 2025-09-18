@@ -6,6 +6,12 @@
 
 #include "viperdb.pb.h"
 
+
+#include <grpcpp/grpcpp.h>
+#include <grpcpp/server.h>
+#include <grpcpp/server_builder.h>
+#include <grpcpp/server_context.h>
+
 #include <functional>
 #include <grpcpp/generic/async_generic_service.h>
 #include <grpcpp/support/async_stream.h>
