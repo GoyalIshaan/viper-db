@@ -25,10 +25,11 @@ std::vector<std::pair<float*, float>> findNSimilarVectors(const std::map<std::st
         if (vector_array.size() == n_probe) {
             float largest_sim = vector_array[n_probe - 1].second;
             vector_array[n_probe - 1].second = calc_sim < largest_sim ? calc_sim : largest_sim;
-        }
+        } else {
+            vector_array.emplace_back(curr_vector, calc_sim);
+        };
         sort(vector_array.begin(), vector_array.end());
     }
-
     return vector_array;
 }
 

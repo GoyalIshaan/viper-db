@@ -14,11 +14,15 @@ std::string ViperDBService::generateUUID() {
 }
 
 grpc::Status ViperDBService::CreateVector(grpc::ServerContext* context, const CreateVectorRequest* request, CreateVectorResponse* response) {
+    if (request -> vector_size() >=128) return grpc::Status::CANCELLED;
     std::string id = generateUUID();
-    std::vector<float> newVector = request->vector();
-    vector_map[id] = newVector;    
+    float* newVector = new float[request->vector_size()];
+    memcpy(newVector, &request -> vector(), sizeof(float) * request->vector_size());
+    vector_map[id] = newVector;
     response->set_id(id);
     return grpc::Status::OK;
 }
 
 grpc::Status ViperDBService::SearchVector(grpc::ServerContext* context, const SearchVectorRequest* request, SearchVectorResponse* response) {
+     return grpc::Status::OK;
+}
