@@ -16,6 +16,7 @@ public:
 
     grpc::Status CreateVector(grpc::ServerContext* context, const CreateVectorRequest* request, CreateVectorResponse* response) override;
     grpc::Status SearchVector(grpc::ServerContext* context, const SearchVectorRequest* request, SearchVectorResponse* response) override;
+    grpc::Status GetVectorById(grpc::ServerContext* context, const GetVectorByIdRequest* request, GetVectorByIdResponse* response) override;
 };
 
 #endif

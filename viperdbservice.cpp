@@ -1,6 +1,7 @@
 #include "viperdbservice.h"
 #include "utils/uuid.h"
 #include "utils/similarity.h"
+#include <grpcpp/support/status.h>
 
 grpc::Status ViperDBService::CreateVector(grpc::ServerContext* context, const CreateVectorRequest* request, CreateVectorResponse* response) {
     if (request -> vector_size() != 128) return grpc::Status::CANCELLED;
@@ -30,6 +31,14 @@ grpc::Status ViperDBService::SearchVector(grpc::ServerContext* context, const Se
 
     delete[] queryVec;
      return grpc::Status::OK;
+}
+
+grpc::Status ViperDBService::GetVectorById(grpc::ServerContext* context, const GetVectorByIdRequest* request, GetVectorByIdResponse* response) {
+    const float * result = vector_map[request -> id()];
+    for (int i = 0; i < 128; ++i) {
+        response -> set_query(i, result[i]);
+    };
+    return grpc::Status::OK;
 }
 
 ViperDBService::~ViperDBService() {

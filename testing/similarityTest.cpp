@@ -1,7 +1,6 @@
 #include "../utils/similarity.h"
 #include <cstdint>
 #include <gtest/gtest.h>
-#include <cmath>
 #include <random>
 
 class SimilarityCalculationTest : public ::testing::Test {
