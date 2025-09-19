@@ -30,7 +30,7 @@ grpc::Status ViperDBService::SearchVector(grpc::ServerContext* context, const Se
     }
 
     delete[] queryVec;
-     return grpc::Status::OK;
+    return grpc::Status::OK;
 }
 
 grpc::Status ViperDBService::GetVectorById(grpc::ServerContext* context, const GetVectorByIdRequest* request, GetVectorByIdResponse* response) {

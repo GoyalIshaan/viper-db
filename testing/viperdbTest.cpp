@@ -1,9 +1,34 @@
-#include <gtest/gtest.h>
+#include "viperdbTest.h"
+#include "viperdb.pb.h"
+#include "viperdbservice.h"
+#include <grpcpp/support/status.h>
+#include <memory>
+#include <random>
 
-class ViperDBTest : public ::testing::Test {
-    protected:
-        ViperDBTest () {
+CreateVectorRequest ViperDBTest::createRandomVector() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(1, 100);
+    CreateVectorRequest newRequest;
+    std::uniform_real_distribution<float> distrib_float(0.0f, 5.0f);
 
-        }
-        const float storedVector1[128] = {0.3215588,0.06310406,0.7157699,0.6189627,0.5236684,0.627691,0.18851787,0.8812187,0.46510535,0.35640728,0.9861922,0.23032112,0.95749533,0.44885632,0.66333157,0.15333652,0.07357369,0.16485938,0.0941649,0.7055549,0.019239116,0.46547103,0.33123466,0.24430186,0.059026673,0.91702366,0.82663405,0.15803196,0.78262585,0.75530577,0.31438154,0.7765444,0.85285676,0.20433149,0.88459283,0.8624078,0.50814575,0.6549486,0.38258615,0.28445998,0.35083747,0.08183024,0.91245294,0.01278571,0.17643799,0.701811,0.9736244,0.7118287,0.18935369,0.4972111,0.2856423,0.39637813,0.15184736,0.2549606,0.43166652,0.7607261,0.7367518,0.7086038,0.932229,0.5530676,0.97435284,0.43815762,0.27954695,0.69691896,0.43138003,0.47089684,0.07080674,0.098352395,0.20204027,0.55277735,0.18443558,0.67132306,0.9415642,0.82519776,0.659235,0.3782042,0.9407993,0.6891096,0.71490985,0.73516685,0.5834584,0.07371173,0.318144,0.014840995,0.037642088,0.7346522,0.7007209,0.70639867,0.49522096,0.7622669,0.022841606,0.53724587,0.28309077,0.94111276,0.69921714,0.7164359,0.6074408,0.97739875,0.42626104,0.37059048,0.4610307,0.6244865,0.69099957,0.9819052,0.009840884,0.06765844,0.13225059,0.24247195,0.106163345,0.735633,0.7054249,0.4557718,0.6854189,0.68491715,0.8194295,0.19469719,0.5080998,0.5803323,0.87160444,0.11852094,0.8833579,0.3674827,0.16443731,0.86469597,0.61529905,0.46264666,0.82416344,0.5065794};
-};
+    for (int i = 0; i < 128; ++i) {
+        newRequest.add_vector(distrib_float(gen));
+    }
+
+    return newRequest;
+}
+
+
+TEST_F(ViperDBTest, InsertValidator) {
+    CreateVectorRequest newRequest = createRandomVector();
+
+    grpc::ServerContext context;
+    CreateVectorResponse response;
+    grpc::Status result = service -> CreateVector(&context, &newRequest, &response);
+
+    EXPECT_TRUE(result.ok()) << "gRPC call failed" << result.error_message();
+    EXPECT_NE(response.id(), "") << "Id should not be an empty string";
+
+    std::cout << "Vector string id: " << response.id() << std::endl;
+}

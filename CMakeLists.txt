@@ -39,13 +39,6 @@ target_include_directories(viperdb_core PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-# Main executable
-add_executable(viperdb_main
-    test.cpp  # Rename this to main.cpp if it contains main()
-)
-
-target_link_libraries(viperdb_main viperdb_core)
-
 # Test executable
 add_executable(viperdb_tests testing/similarityTest.cpp)
 
@@ -54,6 +47,9 @@ add_executable(viperdb_tests testing/similarityTest.cpp)
 # This is the modern CMake way.
 # 'viperdb_tests' should be the name of your test executable
 target_link_libraries(viperdb_tests PRIVATE GTest::gtest_main viperdb_core)
+
+add_executable(viperdb_service_tests testing/viperdbTest.cpp testing/viperdbTest.h)
+target_link_libraries(viperdb_service_tests PRIVATE GTest::gtest_main viperdb_core)
 
 
 # Enable testing
