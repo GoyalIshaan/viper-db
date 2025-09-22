@@ -2,8 +2,10 @@
 #include "viperdb.pb.h"
 #include "viperdbservice.h"
 #include <grpcpp/support/status.h>
+#include <gtest/gtest.h>
 #include <memory>
 #include <random>
+#include <string>
 
 CreateVectorRequest ViperDBTest::createRandomVector() {
     std::random_device rd;
@@ -31,4 +33,34 @@ TEST_F(ViperDBTest, InsertValidator) {
     EXPECT_NE(response.id(), "") << "Id should not be an empty string";
 
     std::cout << "Vector string id: " << response.id() << std::endl;
+}
+
+TEST_F(ViperDBTest, SearchValidator) {
+    CreateVectorRequest create_vector_request = createRandomVector();
+    grpc::ServerContext context;
+    CreateVectorResponse response;
+    grpc::Status result = service -> CreateVector(&context, &create_vector_request, &response);
+
+    EXPECT_TRUE(result.ok()) << "gRPC call failed" << result.error_message();
+
+    const std::string inserted_id = response.id();
+    SearchVectorRequest search_request;
+
+    for(int i = 0; i < create_vector_request.vector_size(); ++i) {
+        search_request.add_query(create_vector_request.vector(i));
+    }
+
+    search_request.set_top_k(1);
+
+    SearchVectorResponse search_response;
+
+    result = service -> SearchVector(&context, &search_request, &search_response);
+
+    EXPECT_TRUE(result.ok()) << "gRPC call failed" << result.error_message();
+
+    const std::string retrieved_id = search_response.results(0).id();
+    EXPECT_EQ(retrieved_id, inserted_id)
+    << "id's are different";
+
+    std::cout << "Inserted id - " << inserted_id << " , retrieved id - " << retrieved_id << std::endl;
 }
