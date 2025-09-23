@@ -26,6 +26,7 @@ add_library(viperdb_core
     viperdbservice.cpp
     utils/similarity.cpp
     utils/uuid.cpp
+    store/buffer.cpp
 )
 
 target_link_libraries(viperdb_core

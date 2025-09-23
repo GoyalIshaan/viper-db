@@ -2,15 +2,20 @@
 #include "utils/uuid.h"
 #include "utils/similarity.h"
 #include <grpcpp/support/status.h>
+#include "store/buffer.h"
+
+NDVectorBuffer buffer;
 
 grpc::Status ViperDBService::CreateVector(grpc::ServerContext* context, const CreateVectorRequest* request, CreateVectorResponse* response) {
     if (request -> vector_size() != 128) return grpc::Status::CANCELLED;
     std::string id = generateUUID();
-    auto* newVector = new float[request->vector_size()];
+    float new_vector[128];
     for (int i = 0; i < request->vector_size(); i++) {
-        newVector[i] = request->vector(i);
+        new_vector[i] = request->vector(i);
     }
-    vector_map[id] = newVector;
+
+    buffer.add_vector(new_vector, id.c_str());
+
     response->set_id(id);
 
     return grpc::Status::OK;
@@ -21,7 +26,7 @@ grpc::Status ViperDBService::SearchVector(grpc::ServerContext* context, const Se
     for (int i = 0; i < request->query_size(); i++) {
         queryVec[i] = request->query(i);
     }
-    std::vector<std::pair<std::string, float>> result = findNSimilarVectors(vector_map, queryVec, request -> top_k());
+    std::vector<std::pair<std::string, float>> result = findNSimilarVectors(buffer, queryVec, request -> top_k());
     for (const auto& [id, sim] : result) {
         SearchVectorResult new_result;
         new_result.set_id(id);
