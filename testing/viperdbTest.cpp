@@ -6,6 +6,9 @@
 #include <memory>
 #include <random>
 #include <string>
+#include "../store/buffer.h"
+
+extern NDVectorBuffer buffer;
 
 CreateVectorRequest ViperDBTest::createRandomVector() {
     std::random_device rd;
@@ -20,6 +23,8 @@ CreateVectorRequest ViperDBTest::createRandomVector() {
 
     return newRequest;
 }
+
+void ViperDBTest::SetUp(){buffer.size = 0; };
 
 
 TEST_F(ViperDBTest, InsertValidator) {

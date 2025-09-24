@@ -3,7 +3,6 @@
 
 #include "store/buffer.h"
 #include <vector>
-#include <map>
 #include <utility>
 
 static constexpr int FLOAT_DIMS = 128;

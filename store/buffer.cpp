@@ -6,5 +6,6 @@ void NDVectorBuffer::add_vector(const float *new_vector, const char *raw_id) {
     memcpy(vec.data, new_vector, sizeof(float) * 128);
     memcpy(vec.raw_id, raw_id, sizeof(char) * 37);
 
+    buffer[size] = vec;
     size++;
 }
